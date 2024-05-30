@@ -7,13 +7,16 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+let nextOrderId = 1;
+
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const size = formData.get('size');
   const toppings = formData.get('topping');
-  console.log(size);
-  console.log(toppings);
-  return new Response(null, { status: 302, headers: { Location: '/confirmation' } });
+
+  const orderId = nextOrderId++;
+
+  return new Response(null, { status: 302, headers: { Location: `/confirmation?orderId=${orderId}` } });
 }
 
 export default function Index() {
@@ -33,7 +36,7 @@ export default function Index() {
           </legend>
           <label><input type="checkbox" />Pepperoni</label>
         </fieldset>
-        <button type="button">Submit</button>
+        <button type="submit">Submit</button>
       </form>
     </main>
   );
